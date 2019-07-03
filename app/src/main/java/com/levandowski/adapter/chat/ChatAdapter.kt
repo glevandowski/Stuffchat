@@ -6,10 +6,19 @@ import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.levandowski.R
+import com.levandowski.StuffChatApplication
 import com.levandowski.model.Message
 
-//TODO pendente
 class ChatAdapter(ref: FirestoreRecyclerOptions<Message>) : FirestoreRecyclerAdapter<Message, ChatHolder>(ref) {
+
+//    @Inject
+//    lateinit var userRepository: UserRepository
+
+//    var user: User? = null
+
+    init {
+        StuffChatApplication.applicationComponent.inject(this)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatHolder =
         ChatHolder(when (viewType) {
@@ -22,14 +31,14 @@ class ChatAdapter(ref: FirestoreRecyclerOptions<Message>) : FirestoreRecyclerAda
             SEND -> {
                 holder.Send().run {
                     messageText.text = model.messageText
-//                    messageUser.text = model.user.name
+                    messageUser.text = model.name
                     messageTime.text = DateFormat.format("HH:mm", model.messageTime.toString().toLong())
                 }
             }
             else -> {
                 holder.Received().run {
                     messageText.text = model.messageText
-//                    messageUser.text = model.user.name
+                    messageUser.text = model.name
                     messageTime.text = DateFormat.format("HH:mm", model.messageTime.toString().toLong())
                 }
             }
@@ -37,7 +46,7 @@ class ChatAdapter(ref: FirestoreRecyclerOptions<Message>) : FirestoreRecyclerAda
     }
 
 //    override fun getItemViewType(position: Int): Int =
-//        if (getItem(position).user.email == "gustavolevandowski@gmail.com") SEND else RECEIVE
+//        if (getItem(position).name == user?.name) SEND else RECEIVE
 
     companion object {
         const val SEND = 0
