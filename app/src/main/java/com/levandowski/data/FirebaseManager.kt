@@ -1,25 +1,18 @@
 package com.levandowski.data
 
-import android.content.Context
-import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.levandowski.R
+import javax.inject.Inject
 
-class FirebaseManager {
+class FirebaseManager @Inject constructor() {
 
     private var dataBase = FirebaseFirestore.getInstance()
-    private var authUI = AuthUI.getInstance()
-    private var auth = FirebaseAuth.getInstance()
 
-    fun getIntentNewCredentials() =
-        authUI.createSignInIntentBuilder().setLogo(R.mipmap.ic_launcher).build()
-
-    fun getCurrentUser() = auth.currentUser
+    companion object {
+        const val COLLECTION_CHAT = "chat"
+        const val COLLECTION_USER = "user"
+    }
 
     fun getDataBase() = dataBase
-
-    fun signOut(context: Context) = authUI.signOut(context)
 
     fun add(path: String, document: String, value: Any) =
         dataBase.collection(path).document(document).set(value)
